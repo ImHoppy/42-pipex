@@ -6,12 +6,12 @@
 #    By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 11:16:36 by mbraets           #+#    #+#              #
-#    Updated: 2022/02/18 17:57:40 by hoppy            ###   ########.fr        #
+#    Updated: 2022/02/18 19:44:08 by hoppy            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 EXEC	= pipex
-SRCS	= pipex.c
+SRCS	= pipex.c ../shared/ft_split.c ../shared/ft_strncmp.c
 HEADER	= pipex.h
 SRC_D	= srcs/
 OBJ_D	= obj/

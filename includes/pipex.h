@@ -6,7 +6,7 @@
 /*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 18:31:10 by hoppy             #+#    #+#             */
-/*   Updated: 2022/02/18 17:38:19 by hoppy            ###   ########.fr       */
+/*   Updated: 2022/02/18 19:42:04 by hoppy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,21 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+
+typedef int	t_fd;
+
+typedef struct s_pipex {
+	t_fd	infile;
+	t_fd	outfile;
+	t_fd	pipefd[2];
+	pid_t	pid1;
+	pid_t	pid2;
+	char	**cmd_args;
+	char	**paths;
+	char	*cmd;
+}	t_pipex;
+
+char	**ft_split(char const *s, char c);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

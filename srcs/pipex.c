@@ -2,38 +2,58 @@
 
 #include <stdio.h>
 
-int
-main(int argc, char *argv[], char *env[])
+char	*find_path(char **env)
 {
-	pid_t	pid;
-	pid_t	pid2;
+	while (ft_strncmp("PATH", *env, 4))
+		env++;
+	return (*env + 5);
+}
+
+void	ft_free(t_pipex *pipex)
+{
+	int	i;
+
+	i = 0;
+	while (pipex->paths[i])
+	{
+		free(pipex->paths[i]);
+		i++;
+	}
+	free(pipex->paths);
+}
+
+int	main(int argc, char *argv[], char *env[])
+{
+	t_pipex	pipex;
 	int		status;
 	int		pipe_fd[2];
 	int		files[2];
-	char 	*av[2] = {argv[1], NULL};
-	char 	*av2[2] = {argv[2], NULL};
-printf("%d", O_RDWR | O_TRUNC | O_CREAT);
-	if (argc < 3)
+	char 	*av[2] = {argv[2], NULL};
+	char 	*av2[2] = {argv[3], NULL};
+
+	if (argc < 5)
 		return 1;
-	files[0] = open("./infile", O_RDONLY);
-	files[1] = open("./outfile", O_RDWR | O_TRUNC | O_CREAT, 00644);
+	printf("%s", find_path(env));
+	pipex.paths = ft_split(find_path(env), ':');
+	files[0] = open(argv[1], O_RDONLY);
+	files[1] = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 00644);
 	if (pipe(pipe_fd) == -1)
 		return (perror("pipe"), 1);
-	if ((pid = fork()) == -1)
+	if ((pipex.pid1 = fork()) == -1)
 		return (perror("fork"), 1);
-	if (pid == 0)
+	if (pipex.pid1 == 0)
 	{
 		// dup2(files[0], STDIN);
 		dup2(pipe_fd[WRITE_END], STDOUT);
 		dup2(files[0], STDIN);
 		close(files[1]);
 		close(pipe_fd[READ_END]);
-		execve(argv[1], av, env);
+		execve(argv[2], av, env);
 	}
 
-	if ((pid2 = fork()) == -1)
+	if ((pipex.pid2 = fork()) == -1)
 		return (perror("fork"), 1);
-	if (pid2 == 0)
+	if (pipex.pid2 == 0)
 	{
 		// close(pipe_fd[WRITE_END]);
 		dup2(pipe_fd[READ_END], STDIN);
@@ -41,32 +61,16 @@ printf("%d", O_RDWR | O_TRUNC | O_CREAT);
 		// close(pipe_fd[READ_END]);
 		close(files[0]);
 		close(pipe_fd[WRITE_END]);
-		execve(argv[2], av2, env);
+		execve(argv[3], av2, env);
 	}
 	close(pipe_fd[WRITE_END]);
 	close(pipe_fd[READ_END]);
 
 	close(files[0]);
 	close(files[1]);
-	
-	// {
-		waitpid(-1, &status, 0);
-		waitpid(-1, &status, 0);
-	// 	// wait(&status);
-	// 	char	buffer[1024];
-	// 	int		ret;
 
-	// 	close(pipe_fd[WRITE_END]);
-	// 	while ((ret = read(pipe_fd[READ_END], buffer, 1023)) > 0)
-	// 	{
-	// 		printf("%d\n", ret);
-	// 		buffer[ret] = 0;
-	// 		printf("%s", buffer);
-	// 	}
-	// 	close(pipe_fd[READ_END]);
-	// }
-	(void)argc;
-	(void)argv;
-	(void)env;
+	waitpid(-1, &status, 0);
+	waitpid(-1, &status, 0);
+	ft_free(&pipex);
 	return 0;
 }
