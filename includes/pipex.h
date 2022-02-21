@@ -6,14 +6,14 @@
 /*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 18:31:10 by hoppy             #+#    #+#             */
-/*   Updated: 2022/02/18 19:42:04 by hoppy            ###   ########.fr       */
+/*   Updated: 2022/02/21 10:01:18 by hoppy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * Todo:
- *  - parse arguments for commands, ft_strncmp = PATH, return + 5 = PATH= and ft_split every path
- *  - get path of cmd
+ *  /- parse arguments for commands, ft_strncmp = PATH, return + 5 = PATH= and ft_split every path
+ *  /- get path of cmd 
  *  - check permission
  *  - output all correct error
  * 
@@ -38,6 +38,11 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+# define ERR_INFILE "Infile"
+# define ERR_OUTFILE "Outfile"
+# define ERR_INPUT "Invalid number of arguments.\n"
+# define ERR_PIPE "Pipe"
+# define ERR_CMD "Command not found\n"
 
 typedef int	t_fd;
 
@@ -54,5 +59,7 @@ typedef struct s_pipex {
 
 char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *s);
 
 #endif
