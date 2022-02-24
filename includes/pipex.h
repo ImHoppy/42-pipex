@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 18:31:10 by hoppy             #+#    #+#             */
-/*   Updated: 2022/02/21 10:01:18 by hoppy            ###   ########.fr       */
+/*   Updated: 2022/02/24 13:14:13 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,9 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-# define ERR_INFILE "Infile"
-# define ERR_OUTFILE "Outfile"
-# define ERR_INPUT "Invalid number of arguments.\n"
-# define ERR_PIPE "Pipe"
-# define ERR_CMD "Command not found\n"
+# define ERR_INPUT "Invalid number of arguments."
+# define ERR_NOENT "No such file or directory"
+# define ERR_CMD "Command not found"
 
 typedef int	t_fd;
 
@@ -57,6 +55,16 @@ typedef struct s_pipex {
 	char	*cmd;
 }	t_pipex;
 
+void	first_child(t_pipex pipex, char **argv, char **env);
+void	second_child(t_pipex pipex, char **argv, char **env);
+
+void	ft_error(char *s1, char *s2);
+void	free_cmd(t_pipex *pipex);
+void	free_path(t_pipex *pipex);
+void	close_fd(t_pipex *pipex);
+int		open_fd(t_pipex *pipex, int argc, char **argv);
+
+// Utils
 char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);

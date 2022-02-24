@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+         #
+#    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 11:16:36 by mbraets           #+#    #+#              #
-#    Updated: 2022/02/21 09:45:46 by hoppy            ###   ########.fr        #
+#    Updated: 2022/02/24 13:10:27 by mbraets          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 EXEC	= pipex
-SRCS	= pipex.c ../shared/ft_split.c ../shared/ft_strncmp.c ../shared/ft_strjoin.c ../shared/ft_strlen.c
+SRCS	= pipex.c child.c utils.c ../shared/ft_split.c ../shared/ft_strncmp.c ../shared/ft_strjoin.c ../shared/ft_strlen.c
 HEADER	= pipex.h
 SRC_D	= srcs/
 OBJ_D	= obj/
