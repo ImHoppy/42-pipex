@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 12:49:49 by mbraets           #+#    #+#             */
-/*   Updated: 2022/02/24 13:08:49 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/02/24 18:32:47 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,20 @@ static char	*get_cmd(char **paths, char *cmd)
 	return (NULL);
 }
 
+char *check_permission(t_pipex pipex, char *cmd)
+{
+	if (access(cmd, R_OK | X_OK) == 0)
+		return (cmd);
+	else
+		return (get_cmd(pipex.paths, cmd));
+	return (NULL);
+}
+
 void	first_child(t_pipex pipex, char **argv, char **env)
 {
 	pipex.cmd_args = ft_split(argv[2], ' ');
-	pipex.cmd = get_cmd(pipex.paths, pipex.cmd_args[0]);
+	pipex.cmd = check_permission(pipex, pipex.cmd_args[0]);
+	dprintf(pipex.outfile, "%s [%d]", pipex.cmd, access(pipex.cmd, R_OK | X_OK));
 	if (!pipex.cmd)
 	{
 		ft_error(pipex.cmd_args[0], ERR_CMD);
@@ -51,7 +61,10 @@ void	first_child(t_pipex pipex, char **argv, char **env)
 void	second_child(t_pipex pipex, char **argv, char **env)
 {
 	pipex.cmd_args = ft_split(argv[3], ' ');
-	pipex.cmd = get_cmd(pipex.paths, pipex.cmd_args[0]);
+	if (access(pipex.cmd_args[0], R_OK | X_OK) == 0)
+		pipex.cmd = pipex.cmd_args[0];
+	else
+		pipex.cmd = get_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
 	{
 		ft_error(pipex.cmd_args[0], ERR_CMD);

@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 18:31:10 by hoppy             #+#    #+#             */
-/*   Updated: 2022/02/24 13:14:13 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/02/24 14:46:03 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  *  /- get path of cmd 
  *  - check permission
  *  - output all correct error
- * 
+ *  < input /cat | grep toto > output2
 */
 
 #ifndef PIPEX_H
