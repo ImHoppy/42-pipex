@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 18:31:10 by hoppy             #+#    #+#             */
-/*   Updated: 2022/02/24 14:46:03 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/02/25 11:53:50 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define ERR_INPUT "Invalid number of arguments."
 # define ERR_NOENT "No such file or directory"
 # define ERR_CMD "Command not found"
+# define ERR_PERM "Permission denied"
 
 typedef int	t_fd;
 

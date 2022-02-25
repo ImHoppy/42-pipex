@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 12:49:49 by mbraets           #+#    #+#             */
-/*   Updated: 2022/02/24 18:32:47 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/02/25 11:53:40 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*get_cmd(char **paths, char *cmd)
 	char	*temp;
 	char	*command;
 
-	while (*paths)
+	while (paths && *paths)
 	{
 		temp = ft_strjoin(*paths, "/");
 		command = ft_strjoin(temp, cmd);
@@ -30,20 +30,37 @@ static char	*get_cmd(char **paths, char *cmd)
 	return (NULL);
 }
 
-char *check_permission(t_pipex pipex, char *cmd)
+char	*check_permission(t_pipex pipex, char *cmd)
 {
-	if (access(cmd, R_OK | X_OK) == 0)
-		return (cmd);
+	if (*cmd == '.' || *cmd == '/')
+	{
+		if (access(cmd, 0) == 0)
+		{
+			if (access(cmd, R_OK | X_OK) == 0)
+				return (cmd);
+			else
+			{
+				ft_error(pipex.cmd_args[0], ERR_PERM);
+				free_cmd(&pipex);
+				free_path(&pipex);
+				exit(1);
+			}
+		}
+		else
+			return (NULL);
+	}
 	else
 		return (get_cmd(pipex.paths, cmd));
 	return (NULL);
 }
 
+int	child_free(t_pipex pipex);
+
 void	first_child(t_pipex pipex, char **argv, char **env)
 {
 	pipex.cmd_args = ft_split(argv[2], ' ');
 	pipex.cmd = check_permission(pipex, pipex.cmd_args[0]);
-	dprintf(pipex.outfile, "%s [%d]", pipex.cmd, access(pipex.cmd, R_OK | X_OK));
+	// dprintf(pipex.outfile, "%s [%d]", pipex.cmd, access(pipex.cmd, R_OK | X_OK));
 	if (!pipex.cmd)
 	{
 		ft_error(pipex.cmd_args[0], ERR_CMD);

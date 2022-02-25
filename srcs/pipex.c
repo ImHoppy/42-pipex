@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 13:11:06 by mbraets           #+#    #+#             */
-/*   Updated: 2022/02/24 16:18:07 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/02/25 11:49:07 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static char	*find_path(char **env)
 {
 	while (*env && ft_strncmp("PATH", *env, 4))
 		env++;
-	// if (*env == NULL)
-		// return ("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
+	if (*env == NULL)
+		return (NULL);
 	return (*env + 5);
 }
 

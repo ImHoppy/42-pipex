@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 13:09:50 by mbraets           #+#    #+#             */
-/*   Updated: 2022/02/24 18:24:09 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/02/25 11:48:50 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	free_path(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->paths[i])
+	while (pipex->paths && pipex->paths[i])
 	{
 		free(pipex->paths[i]);
 		i++;
