@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   child.c                                            :+:      :+:    :+:   */
+/*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 12:49:49 by mbraets           #+#    #+#             */
-/*   Updated: 2022/02/25 11:53:40 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/07 13:47:30 by hoppy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*get_cmd(char **paths, char *cmd)
 
 char	*check_permission(t_pipex pipex, char *cmd)
 {
-	if (*cmd == '.' || *cmd == '/')
+	if ((*cmd == '.' || *cmd == '/')  && access(cmd, R_OK | X_OK) == 0)
 	{
 		if (access(cmd, 0) == 0)
 		{

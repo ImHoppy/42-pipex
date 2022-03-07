@@ -1,7 +1,7 @@
 #SETUP
 NAME		=	pipex
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror -I$(HEADER_DIR)
+CFLAGS		=	-Wall -Wextra -Werror -I$(HEADER_DIR) -g
 RM			=	rm -rf
 
 #FILES AND PATH
@@ -26,30 +26,38 @@ SHARED 		=	$(addprefix $(SHARED_DIR), $(SHARED_SRCS))
 OBJ_F		=	$(SHARED:.c=.o)
 
 #COMMANDS
-%.o: %.c $(HEADER) $(MAKE)
+%.o: %.c $(HEADER) Makefile
+		@printf "$(BLUE)	-> $< compiled!$(DEFAULT)\n"
 		@${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	$(OBJ_F) $(OBJ_M)
 		@$(CC) $(OBJ_F) $(OBJ_M) -o $(NAME)
-		@printf "$(GREEN)$(NAME) created!$(DEFAULT)\n"
+		@printf "$(GREEN)-> $(NAME) created!$(DEFAULT)\n"
 
-all:	$(NAME)
+postbuild:
+	@printf "$(BLUE)=> Creating $(NAME)!$(DEFAULT)\n"
+
+all:	postbuild $(NAME)
 
 bonus:	$(OBJ_F) $(OBJ_B)
 		@$(CC) $(OBJ_F) $(OBJ_B) -o $(NAME)
-		@printf "$(GREEN)$(NAME) created!$(DEFAULT)\n"
+		@printf "$(GREEN)-> $(NAME) created!$(DEFAULT)\n"
 
 clean:
 		@$(RM) $(OBJ_M)
 		@$(RM) $(OBJ_F)
 		@$(RM) $(OBJ_B)
-		@printf "$(YELLOW)Object files deleted!$(DEFAULT)\n"
-
+		@printf "$(RED)-> Object files deleted!$(DEFAULT)\n"
 fclean:	clean
 		@$(RM) $(NAME)
-		@printf "$(RED)$(NAME) deleted!$(DEFAULT)\n"
+		@printf "$(RED)-> $(NAME) deleted!$(DEFAULT)\n"
 
-re:				fclean all
+run: all
+	./$(NAME) infile ls cat outfile
+	@echo
+	@cat outfile
+
+re:	fclean all
 
 .PHONY:		all clean fclean bonus re
 
@@ -61,7 +69,8 @@ endif
 ifeq ($(UNAME_S),Darwin)
 	COLOR = \x1b
 endif
-RED 	= $(COLOR)[1;31m
-GREEN 	= $(COLOR)[1;32m
-YELLOW 	= $(COLOR)[1;33m
+RED 	= $(COLOR)[0;31m
+GREEN 	= $(COLOR)[0;32m
+YELLOW 	= $(COLOR)[0;33m
+BLUE 	= $(COLOR)[0;34m
 DEFAULT = $(COLOR)[0m

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 13:11:06 by mbraets           #+#    #+#             */
-/*   Updated: 2022/02/25 11:49:07 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/07 13:33:30 by hoppy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,7 @@ int	main(int argc, char *argv[], char *env[])
 	waitpid(pipex.pid1, &status, 0);
 	waitpid(pipex.pid2, &status, 0);
 	free_path(&pipex);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (0);
 }
