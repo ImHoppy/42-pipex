@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 13:11:06 by mbraets           #+#    #+#             */
-/*   Updated: 2022/03/08 12:24:03 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/08 14:42:18 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,18 @@ int	main(int argc, char *argv[], char *env[])
 {
 	t_pipex	pipex;
 	int		status;
+	int		returnvalue;
+	int		fd;
 
 	if (argc != 5)
 		return (ft_error("pipex", ERR_INPUT), 1);
-	if (open_fd(&pipex, argc, argv) == 1)
-		exit(1);
+	fd = open_fd(&pipex, argc, argv);
+	if (fd != -1)
+		exit(fd);
 	pipex.paths = ft_split(find_path(env), ':');
 	pipex.pid1 = fork();
+	returnvalue = 0;
+	status = 0;
 	if (pipex.pid1 == -1)
 		return (perror("fork"), 1);
 	if (pipex.pid1 == 0)
@@ -45,7 +50,5 @@ int	main(int argc, char *argv[], char *env[])
 	waitpid(pipex.pid1, &status, 0);
 	waitpid(pipex.pid2, &status, 0);
 	free_path(&pipex);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (0);
+	return (((status) & 0xff00) >> 8);
 }
