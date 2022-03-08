@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 13:11:06 by mbraets           #+#    #+#             */
-/*   Updated: 2022/03/07 13:33:30 by hoppy            ###   ########.fr       */
+/*   Updated: 2022/03/08 12:24:03 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char *argv[], char *env[])
 	t_pipex	pipex;
 	int		status;
 
-	if (argc < 5)
+	if (argc != 5)
 		return (ft_error("pipex", ERR_INPUT), 1);
 	if (open_fd(&pipex, argc, argv) == 1)
 		exit(1);
