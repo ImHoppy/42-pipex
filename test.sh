@@ -469,7 +469,7 @@ echo -e "./pipex input cat cat output
 ./pipex input cat cat output
 RET1=$?
 echo -e "-------------------------------------------------------------------------------------------------<\033[0m"
-echo -e "< input cat | cat > dossier2
+echo -e "< input cat | cat > output2
 \033[1;33m>----------------------------------------TRUE----------------------------------------------------"
 < input cat | cat > output2
 RET2=$?
