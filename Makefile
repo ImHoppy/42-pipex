@@ -26,30 +26,32 @@ SHARED 		=	$(addprefix $(SHARED_DIR), $(SHARED_SRCS))
 OBJ_F		=	$(SHARED:.c=.o)
 
 #COMMANDS
-%.o: %.c $(HEADER) Makefile
+%.o: %.c  $(HEADER)
+		@printf "	"
+		${CC} ${CFLAGS} -c $< -o $@
 		@printf "$(BLUE)	-> $< compiled!$(DEFAULT)\n"
-		@${CC} ${CFLAGS} -c $< -o $@
 
-$(NAME):	$(OBJ_F) $(OBJ_M)
-		@$(CC) $(OBJ_F) $(OBJ_M) -o $(NAME)
+$(NAME):	 $(OBJ_F) $(OBJ_M)
+		$(CC) $(OBJ_F) $(OBJ_M) -o $(NAME)
 		@printf "$(GREEN)-> $(NAME) created!$(DEFAULT)\n"
 
 postbuild:
 	@printf "$(BLUE)=> Creating $(NAME)!$(DEFAULT)\n"
 
-all:	postbuild $(NAME)
+all:	 $(NAME)
 
 bonus:	$(OBJ_F) $(OBJ_B)
-		@$(CC) $(OBJ_F) $(OBJ_B) -o $(NAME)
+		@printf "	"
+		$(CC) $(OBJ_F) $(OBJ_B) -o $(NAME)
 		@printf "$(GREEN)-> $(NAME) created!$(DEFAULT)\n"
 
 clean:
-		@$(RM) $(OBJ_M)
-		@$(RM) $(OBJ_F)
-		@$(RM) $(OBJ_B)
+		$(RM) $(OBJ_M)
+		$(RM) $(OBJ_F)
+		$(RM) $(OBJ_B)
 		@printf "$(RED)-> Object files deleted!$(DEFAULT)\n"
 fclean:	clean
-		@$(RM) $(NAME)
+		$(RM) $(NAME)
 		@printf "$(RED)-> $(NAME) deleted!$(DEFAULT)\n"
 
 run: all
