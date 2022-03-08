@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 12:49:49 by mbraets           #+#    #+#             */
-/*   Updated: 2022/03/08 16:11:07 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/08 16:43:03 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*get_cmd(char **paths, char *cmd)
 {
 	char	*temp;
 	char	*command;
-	
+
 	while (paths && *paths)
 	{
 		temp = ft_strjoin(*paths, "/");
@@ -29,7 +29,6 @@ static char	*get_cmd(char **paths, char *cmd)
 	}
 	return (NULL);
 }
-
 
 char	*check_permission(t_pipex *pipex, char *cmd)
 {

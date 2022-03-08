@@ -1001,4 +1001,4 @@ cat leak
 fi
 rm -rf leak
 echo -e "\033[1;37m ---------------------------------------------------------------------------------------------\033[0m"
-rm -rf dosser dossier2 not out  output  output2
+rm -rf dosser dossier dossier2 not out  output  output2 toto ./cat 

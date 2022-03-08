@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 13:09:50 by mbraets           #+#    #+#             */
-/*   Updated: 2022/03/08 16:28:48 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/08 16:39:22 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void	close_fd(t_pipex *pipex)
 int	open_fd(t_pipex *pipex, int argc, char **argv)
 {
 	pipex->infile = open(argv[1], O_RDONLY);
-	printf("%d\n", errno);
 	pipex->outfile = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 00644);
-	printf("%d\n", errno);
 	if (pipex->infile < 0)
 		return (perror(argv[1]), 0);
 	if (pipex->outfile < 0)
