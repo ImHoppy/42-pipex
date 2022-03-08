@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 12:49:49 by mbraets           #+#    #+#             */
-/*   Updated: 2022/03/07 13:47:30 by hoppy            ###   ########.fr       */
+/*   Updated: 2022/03/08 12:26:41 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*get_cmd(char **paths, char *cmd)
 
 char	*check_permission(t_pipex pipex, char *cmd)
 {
-	if ((*cmd == '.' || *cmd == '/')  && access(cmd, R_OK | X_OK) == 0)
+	if ((*cmd == '.' || *cmd == '/'))
 	{
 		if (access(cmd, 0) == 0)
 		{
@@ -66,7 +66,7 @@ void	first_child(t_pipex pipex, char **argv, char **env)
 		ft_error(pipex.cmd_args[0], ERR_CMD);
 		free_cmd(&pipex);
 		free_path(&pipex);
-		exit(1);
+		exit(127);
 	}
 	dup2(pipex.pipefd[WRITE_END], STDOUT);
 	dup2(pipex.infile, STDIN);
