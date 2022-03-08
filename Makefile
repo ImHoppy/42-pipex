@@ -20,7 +20,7 @@ BPATH_DIR	=	bonus/
 BPATH		=	$(addprefix $(BPATH_DIR), $(BPATH_SRCS))
 OBJ_B		=	$(BPATH:.c=.o)
 
-SHARED_SRCS	=	ft_strncmp.c ft_split.c ft_strjoin.c ft_strlen.c
+SHARED_SRCS	=	ft_strncmp.c ft_split.c ft_strjoin.c ft_strlen.c ft_strdup.c
 SHARED_DIR	=	shared/
 SHARED 		=	$(addprefix $(SHARED_DIR), $(SHARED_SRCS))
 OBJ_F		=	$(SHARED:.c=.o)
