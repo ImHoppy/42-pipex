@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 11:20:12 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/08 16:47:48 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/09 14:58:14 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,26 @@
 
 typedef int	t_fd;
 
-typedef struct s_pipexb {
+typedef struct s_arguments {
+	int		argc;
+	char	**argv;
+	char	**envp;
+}	t_args;
+
+typedef struct s_pipex {
 	char	**cmd_args;
 	char	**paths;
 	char	*cmd;
-}	t_pipexb;
+	pid_t	*pid;
+	t_args	args;
+	t_fd	pipefd[2];
+}	t_pipex;
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+// Utils
+char	**ft_split(char const *s, char c);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s1);
 
 #endif
