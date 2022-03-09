@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hoppy <hoppy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 09:26:00 by hoppy             #+#    #+#             */
-/*   Updated: 2022/02/21 09:28:31 by hoppy            ###   ########.fr       */
+/*   Updated: 2022/03/09 10:36:56 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include <stdlib.h>
 
 size_t	ft_strlen(const char	*s)
 {
