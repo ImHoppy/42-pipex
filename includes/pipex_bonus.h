@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 11:20:12 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/09 14:58:14 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/10 16:28:14 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,18 @@ typedef struct s_arguments {
 	char	**envp;
 }	t_args;
 
-typedef struct s_pipex {
+typedef struct s_cmd {
+	int		index;
 	char	**cmd_args;
-	char	**paths;
 	char	*cmd;
 	pid_t	*pid;
+}	t_cmds;
+
+typedef struct s_pipex {
+	// char	**cmd_args;
+	char	**paths;
+	// char	*cmd;
+	t_cmds	**cmds;
 	t_args	args;
 	t_fd	pipefd[2];
 }	t_pipex;
@@ -59,5 +66,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
+char	*ft_strchr(const char *s, int c);
+void	*ft_calloc(size_t count, size_t size);
 
 #endif
