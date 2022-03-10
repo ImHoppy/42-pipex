@@ -14,7 +14,7 @@ MPATH_DIR	=	mandatory/
 MPATH		=	$(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M		=	$(MPATH:.c=.o)
 
-BPATH_SRCS	=	pipex_bonus.c
+BPATH_SRCS	=	pipex_bonus_test.c
 BPATH_DIR	=	bonus/
 BPATH		=	$(addprefix $(BPATH_DIR), $(BPATH_SRCS))
 OBJ_B		=	$(BPATH:.c=.o)
@@ -42,7 +42,7 @@ all:	 $(NAME)
 bonus:	$(OBJ_F) $(OBJ_B)
 		@printf "	"
 		$(CC) $(OBJ_F) $(OBJ_B) -o $(NAME)
-		@printf "$(GREEN)-> $(NAME) created!$(DEFAULT)\n"
+		@printf "$(GREEN)-> $(NAME) bonus created!$(DEFAULT)\n"
 
 clean:
 		$(RM) $(OBJ_M)
