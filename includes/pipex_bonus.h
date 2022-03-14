@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 11:20:12 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/10 16:28:14 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/14 15:29:38 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,13 @@ typedef struct s_arguments {
 	char	**envp;
 }	t_args;
 
-typedef struct s_cmd {
-	int		index;
-	char	**cmd_args;
-	char	*cmd;
-	pid_t	*pid;
-}	t_cmds;
 
 typedef struct s_pipex {
-	// char	**cmd_args;
+	char	**cmd_args;
 	char	**paths;
-	// char	*cmd;
-	t_cmds	**cmds;
+	char	*cmd;
 	t_args	args;
-	t_fd	pipefd[2];
+	pid_t	*pid;
 }	t_pipex;
 
 // Utils

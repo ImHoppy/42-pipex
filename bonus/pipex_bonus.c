@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 12:20:04 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/10 17:41:17 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/14 15:30:21 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	first_child(t_pipex pipex, int pipefd[2], char *infile)
 {
 	t_fd	fd;
 	pid_t	pid;
-	char *test[2] = {"/bin/clear", NULL};
+	//char *test[2] = {"/bin/ls", NULL};
 
 	pid = fork();
 	if (pid == -1)
@@ -38,7 +38,7 @@ int	first_child(t_pipex pipex, int pipefd[2], char *infile)
 		dup2(pipefd[WRITE_END], STDOUT);
 		dup2(fd, STDIN);
 		close(pipefd[READ_END]);
-		execve("/bin/clear", test, pipex.args.envp);
+		execve(pipex.cmd, pipex.cmd_args, pipex.args.envp);
 	}
 	// waitpid(-1, NULL, 0);
 	return (0);
@@ -47,7 +47,7 @@ int	first_child(t_pipex pipex, int pipefd[2], char *infile)
 int	execute_cmd(t_pipex pipex, t_fd pipefd[2], t_fd oldpipefd[2])
 {
 	pid_t	pid;
-	char *test[3] = {"cat", "2", NULL};
+	//char *test[2] = {"cat", NULL};
 	pid = fork();
 	if (pid == -1)
 		return (1);
@@ -57,7 +57,7 @@ int	execute_cmd(t_pipex pipex, t_fd pipefd[2], t_fd oldpipefd[2])
 		dup2(pipefd[WRITE_END], STDOUT);
 		close(oldpipefd[WRITE_END]);
 		close(pipefd[READ_END]);
-		execve("/bin/ls", test, pipex.args.envp);
+		execve(pipex.cmd, pipex.cmd_args, pipex.args.envp);
 
 		exit(1);
 	}
@@ -68,7 +68,7 @@ int	last_child(t_pipex pipex, int pipefd[2], char	*outfile)
 {
 	t_fd	fd;
 	pid_t	pid;
-	char *test[3] = {"cat", NULL, NULL};
+	//char *test[3] = {"cat", NULL, NULL};
 	pid = fork();
 	if (pid == -1)
 		return (1);
@@ -80,7 +80,7 @@ int	last_child(t_pipex pipex, int pipefd[2], char	*outfile)
 		dup2(pipefd[READ_END], STDIN);
 		dup2(fd, STDOUT);
 		close(pipefd[WRITE_END]);
-		execve("/bin/cat", test, pipex.args.envp);
+		execve(pipex.cmd, pipex.cmd_args, pipex.args.envp);
 
 		exit(1);
 	}
@@ -88,6 +88,24 @@ int	last_child(t_pipex pipex, int pipefd[2], char	*outfile)
 }
 
 void	free_cmd(t_pipex *pipex)
+{
+	int	i;
+
+	if (pipex->cmd_args)
+	{
+		i = 0;
+		while (pipex->cmd_args[i])
+		{
+			free(pipex->cmd_args[i]);
+			i++;
+		}
+		free(pipex->cmd_args);
+	}
+	if (pipex->cmd)
+		free(pipex->cmd);
+}
+
+void	free_cmds(t_pipex *pipex)
 {
 	int	i;
 	int	j;
@@ -153,75 +171,95 @@ char	*get_path_cmd(t_pipex pipex, char *cmd)
 	return (NULL);
 }
 
-int	check_perm(char *cmd)
+char	*check_permission(t_pipex *pipex, char *cmd)
 {
-	if (ft_strchr(cmd, '.') || ft_strchr(cmd, '/'))
+	if ((*cmd == '.' || *cmd == '/'))
 	{
 		if (access(cmd, F_OK) == 0)
 		{
 			if (access(cmd, R_OK | X_OK) == 0)
-				return (1);
-			return (3);
+				return (ft_strdup(cmd));
+			else
+			{
+				ft_error(cmd, ERR_PERM);
+				free_cmd(pipex);
+				free_path(pipex);
+				exit(1);
+			}
 		}
-		return (2);
+		else
+			return (NULL);
 	}
-	return (0);
+	else
+		return (get_path_cmd(*pipex, cmd));
+	return (NULL);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
+	int		newpipefd[2];
 	int		pipefd[2];
 	// int		newpipefd[2];
 	int		i;
-printf("");
+
 	if (argc < 5)
 		return (ft_error("pipex", ERR_INPUT), 1);
-	pipex.args = (t_args) {argc, argv, envp};
+	pipex.cmd = NULL;
+	pipex.cmd_args = NULL;
+	pipex.args = (t_args) {argc - 1, argv + 1, envp};
 	pipex.paths = ft_split(find_path(envp), ':');
-	pipex.cmds = NULL;
-	pipex.cmds = ft_calloc(sizeof(t_cmds),(argc - 3));
+	pipex.pid = ft_calloc(sizeof(pid_t), (pipex.args.argc - 2 + 1));
+	if (pipe(pipefd) < 0)
+		return (perror("pipe"), 1);
 	i = 0;
-	while (i < argc - 3)
+	while (i < pipex.args.argc - 2)
 	{
-		printf("cmd %s\n",argv[i+2]);
-		
-		if (pipe(pipefd) < 0)
-			return (perror("pipe"), 1);
+		printf("cmd %s %d\n",pipex.args.argv[i + 1], pipex.args.argc-i-2);
+		pipex.cmd_args = ft_split(pipex.args.argv[i + 1], ' ');
+		pipex.cmd = check_permission(&pipex, pipex.cmd_args[0]);
+		printf("%s %s\n", pipex.cmd, pipex.cmd_args[0]);
 		if (i == 0)
-			first_child(pipex, pipefd, argv[1]);
-		if (i == argc - 2)
-			last_child(pipex, pipefd, argv[argc - 1]);
-		pipex.cmds[i] = malloc(sizeof(t_cmds));
-		pipex.cmds[i]->cmd_args = ft_split(argv[i+2], ' ');
-		pipex.cmds[i]->cmd = get_path_cmd(pipex, pipex.cmds[i]->cmd_args[0]);
-		pipex.cmds[i]->index = i;
-		
-		// if (pipe(newpipefd) < 0)
-		// 	return (perror("pipe"), 1);
-		// dup2(pipefd[0], newpipefd[0]);
-		// dup2(pipefd[1], newpipefd[1]);
-		// close(newpipefd[0]);
-		// close(newpipefd[1]);
+			pipex.pid[i] = first_child(pipex, pipefd, argv[1]);
+		else if (i == pipex.args.argc - 3)
+			pipex.pid[i] = last_child(pipex, pipefd, argv[argc - 1]);
+		else if (i != 0 && i != pipex.args.argc - 2)
+		{
+			if (pipe(newpipefd) < 0)
+				return (perror("pipe"), 1);
+			pipex.pid[i] = execute_cmd(pipex, newpipefd, pipefd);
+			close(pipefd[0]);
+			close(pipefd[1]);
+			pipefd[0] = newpipefd[0];
+			pipefd[1] = newpipefd[1];
+		}
+		free_cmd(&pipex);
 		i++;
 	}
+	close(newpipefd[0]);
+	close(newpipefd[1]);
+	close(pipefd[0]);
+	close(pipefd[1]);
 	i = 0;
 	while (i < argc - 3)
 	{
-		printf("%s\n", pipex.cmds[i]->cmd_args[0]);
-		waitpid(*pipex.cmds[i]->pid, NULL, 0);
+		waitpid(pipex.pid[i], NULL, 0);
 		i++;
 	}
 	close(pipefd[0]);
 	close(pipefd[1]);
-	waitpid(i, NULL, 0);
+	close(newpipefd[0]);
+	close(newpipefd[1]);
 	free_path(&pipex);
-	free_cmd(&pipex);
-	free(pipex.cmds);
+	free(pipex.pid);
 	return (0);
 }
 
 
+//		pipex.cmds[i] = malloc(sizeof(t_cmds));
+//		pipex.cmds[i]->cmd_args = ft_split(argv[i+2], ' ');
+//		pipex.cmds[i]->cmd = get_path_cmd(pipex, pipex.cmds[i]->cmd_args[0]);
+//		pipex.cmds[i]->index = i;
 char *getstr(int i)
 {
 	switch (i)
