@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 11:20:12 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/14 15:29:38 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/15 11:16:55 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,23 @@ typedef struct s_pipex {
 	pid_t	*pid;
 }	t_pipex;
 
-// Utils
+// Child
+void	child_error(t_pipex *pipex);
+int		first_child(t_pipex pipex, int pipefd[2], char *infile, char *cmd);
+int		execute_cmd(t_pipex pipex, t_fd pipefd[2], t_fd oldpipefd[2], char *cmd);
+int		last_child(t_pipex pipex, int pipefd[2], char	*outfile, char *cmd);
+
+// main
+void	xexit(int i);
+void	free_cmd(t_pipex *pipex);
+void	free_path(t_pipex *pipex);
+void	ft_error(char *s1, char *s2);
+char	*get_path_cmd(t_pipex pipex, char *cmd);
+char	*check_permission(t_pipex *pipex, char *cmd);
+void	pipex_init(t_pipex *pipex, int argc, char **argv, char **envp);
+int		execute_all_cmd(t_pipex pipex, char **argv);
+
+// Shared
 char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
