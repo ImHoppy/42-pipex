@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 11:20:12 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/15 11:16:55 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/15 16:58:55 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,35 +39,48 @@
 typedef int	t_fd;
 
 typedef struct s_arguments {
-	int		argc;
-	char	**argv;
+	int		ac;
+	char	**av;
 	char	**envp;
 }	t_args;
-
 
 typedef struct s_pipex {
 	char	**cmd_args;
 	char	**paths;
 	char	*cmd;
-	t_args	args;
+	int		nbr_cmd;
+	int		i;
+	t_args	a;
 	pid_t	*pid;
 }	t_pipex;
 
 // Child
-void	child_error(t_pipex *pipex);
-int		first_child(t_pipex pipex, int pipefd[2], char *infile, char *cmd);
-int		execute_cmd(t_pipex pipex, t_fd pipefd[2], t_fd oldpipefd[2], char *cmd);
-int		last_child(t_pipex pipex, int pipefd[2], char	*outfile, char *cmd);
+void	first_child(t_pipex pipex, int pipefd[2], char *infile, char *cmd);
+void	mid_cmd(t_pipex pipex, t_fd pipefd[2], \
+t_fd oldpipefd[2], char *cmd);
+void	last_child(t_pipex pipex, int pipefd[2], char	*outfile, char *cmd);
+int		wait_childs(t_pipex pipex);
 
-// main
-void	xexit(int i);
+// Free
 void	free_cmd(t_pipex *pipex);
 void	free_path(t_pipex *pipex);
+
+// Error
+void	child_error(t_pipex *pipex, char *s1, char *s2, int exit_status);
 void	ft_error(char *s1, char *s2);
+
+// Main
+void	pipex_init(t_pipex *pipex, int argc, char **argv, char **envp);
+int		execute_all_cmd(t_pipex pipex);
+
+// Command Utils
+char	*find_path(char **env);
 char	*get_path_cmd(t_pipex pipex, char *cmd);
 char	*check_permission(t_pipex *pipex, char *cmd);
-void	pipex_init(t_pipex *pipex, int argc, char **argv, char **envp);
-int		execute_all_cmd(t_pipex pipex, char **argv);
+
+// fd
+void	close_all(int newpipefd[2], int pipefd[2]);
+void	switch_fd(int newpipefd[2], int pipefd[2]);
 
 // Shared
 char	**ft_split(char const *s, char c);
