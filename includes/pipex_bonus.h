@@ -6,9 +6,14 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 11:20:12 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/15 16:58:55 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/16 14:09:57 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * TODO:
+ *	Close the pipe when child has a error
+*/
 
 #ifndef PIPEX_BONUS_H
 # define PIPEX_BONUS_H

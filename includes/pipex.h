@@ -6,9 +6,14 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 18:31:10 by hoppy             #+#    #+#             */
-/*   Updated: 2022/03/08 16:40:51 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/03/16 14:09:15 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * TODO:
+ *	Open the infile and outfile in the child not the parent
+*/
 
 #ifndef PIPEX_H
 # define PIPEX_H
